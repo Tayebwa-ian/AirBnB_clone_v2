@@ -3,6 +3,6 @@ body {
     margin: 0 auto;
     padding: 0;
 }
-.content {
-    height: 500px;
+.container {
+    max-width: 1000px;
 }

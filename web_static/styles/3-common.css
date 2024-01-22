@@ -6,6 +6,6 @@ body {
     font-size: 14px;
     font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
-.content {
-    height: 500px;
+.container {
+    max-width: 1000px;
 }

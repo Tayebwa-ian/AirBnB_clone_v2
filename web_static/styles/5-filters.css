@@ -25,3 +25,27 @@
 .filter button:hover {
     opacity: 0.9;
 }
+.filter .locations {
+    position: relative;
+    height: 100%;
+    width: 25%;
+    margin-left: 20px;
+    border-right: 1px solid #DDDDDD;
+    text-align: start;
+}
+.filter .amenities {
+    position: relative;
+    height: 100%;
+    width: 25%;
+    margin-left: 20px;
+    text-align: start;
+}
+.filter .locations h3, .filter .amenities h3 {
+    font-weight: 600px;
+}
+.filter .locations h4, .filter .amenities h4 {
+    font-weight: 400px;
+    font-size: 14px;
+    margin-top: -20px;
+    padding-left: 4px;
+}
