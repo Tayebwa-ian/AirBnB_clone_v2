@@ -70,3 +70,42 @@
     margin: auto;
     padding-top: 50px;
 }
+.articles .amenities, .reviews {
+    margin-top: 40px;
+}
+.articles article .amenities h2, .reviews h2 {
+    font-size: 16px;
+    border-bottom: 1px solid #DDDDDD;
+    text-align: start;
+}
+.articles article .reviews h2 {
+    font-size: 16px;
+    border-bottom: 1px solid #DDDDDD;
+    text-align: start;
+}
+.articles article .amenities ul, .reviews ul {
+    list-style: none;
+    margin-left: -40px;
+}
+.articles article .amenities ul .pet {
+    background: url('../images/pets.png') left center no-repeat;
+    background-size: 18px;
+    padding-left: 20px;
+    padding-top: 6px;
+}
+.articles article .amenities ul .tv {
+    background: url('../images/tv.png') left center no-repeat;
+    background-size: 18px;
+    padding-left: 20px;
+    padding-top: 6px;
+}
+.articles article .amenities ul .wifi {
+    background: url('../images/wifi.png') left center no-repeat;
+    background-size: 18px;
+    padding-left: 20px;
+    padding-top: 5px;
+}
+.articles article .reviews ul li h3 {
+    margin-bottom: -10px;
+    font-size: 14px;
+}
