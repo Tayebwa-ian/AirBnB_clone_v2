@@ -9,6 +9,7 @@ import cmd
 import re
 from models import (storage, User, City,
                     Amenity, Place, BaseModel, State, Review)
+from utils import dict_from_cmd_args
 
 
 classes = {
@@ -34,7 +35,7 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def help_quit(self) -> None:
-        """Text to display when help command in run with quit cmd"""
+        """Text to display when help command is run with quit cmd"""
         print("Quit command to exit the program")
 
     def do_EOF(self, value) -> bool:
@@ -42,7 +43,7 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def help_EOF(self) -> None:
-        """Text to display when help command in run with EOF cmd"""
+        """Text to display when help command is run with EOF cmd"""
         print("EOF command to exit the program")
 
     def do_create(self, value) -> None:
@@ -55,14 +56,19 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         else:
             try:
-                obj = classes[value]()
+                params = dict_from_cmd_args(value)
+                if len(params) > 0:
+                    cl = value.split(" ")[0]
+                    obj = classes[cl](**params)
+                else:
+                    obj = classes[value]()
                 obj.save()
                 print(f"{obj.id}")
             except NameError:
                 print("** class doesn't exist **")
 
     def help_create(self) -> None:
-        """Text to display when help command in run with create cmd"""
+        """Text to display when help command is run with create cmd"""
         print("Create a new instance of a class "
               "\nUsage: create User (creates a new user instance)")
 
@@ -95,7 +101,7 @@ class HBNBCommand(cmd.Cmd):
                     print("** class doesn't exist **")
 
     def help_show(self) -> None:
-        """Text to display when help command in run with show cmd"""
+        """Text to display when help command is run with show cmd"""
         print("Prints a string representation of an instance "
               "\nUsage: show User user-id "
               "(prints a str rep of a user instance)")
@@ -129,7 +135,7 @@ class HBNBCommand(cmd.Cmd):
                     print("** class doesn't exist **")
 
     def help_destroy(self) -> None:
-        """Text to display when help command in run with destroy cmd"""
+        """Text to display when help command is run with destroy cmd"""
         print("Delete an instance based on the class name and id "
               "\nUsage: delete User user-id "
               "(deletes user instance with id user-id)")
@@ -166,7 +172,7 @@ class HBNBCommand(cmd.Cmd):
             print(print_list)
 
     def help_all(self) -> None:
-        """Text to display when help command in run with all cmd"""
+        """Text to display when help command is run with all cmd"""
         print("Prints all string representation of all instances "
               "based or not on the class name \nUsage: all User "
               "(print all str rep of User objects)")
@@ -223,7 +229,7 @@ class HBNBCommand(cmd.Cmd):
                         print("** class doesn't exist **")
 
     def help_update(self) -> None:
-        """Text to display when help command in run with update cmd"""
+        """Text to display when help command is run with update cmd"""
         print("Updates an instance based on the class name "
               "and id by adding or updating attribute "
               "\nUsage: update User 1234-1234-1234 first_name IAN "
@@ -255,7 +261,7 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
 
     def help_count(self) -> None:
-        """Text to display when help command in run with count cmd"""
+        """Text to display when help command is run with count cmd"""
         print("Prints the number of all instances "
               "based on the class name \nUsage: count User\n"
               "Usage: User.count()\n"
