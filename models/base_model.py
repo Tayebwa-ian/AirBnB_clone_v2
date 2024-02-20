@@ -21,22 +21,29 @@ class BaseModel:
         Return: None
         """
         if kwargs:
+            int_attrs = [
+                "number_rooms",
+                "number_bathrooms",
+                "max_guest",
+                "price_by_night"
+            ]
+            float_attrs = [
+                "longitude",
+                "latitude"
+            ]
+            obj_id = getattr(self, "id", None)
+            if obj_id is None:
+                self.id = str(uuid4())
+                self.created_at = datetime.now()
+                self.updated_at = datetime.now()
             for key in kwargs.keys():
-                int_attrs = [
-                    "number_rooms",
-                    "number_bathrooms",
-                    "max_guest",
-                    "price_by_night"
-                ]
-                float_attrs = [
-                    "longitude",
-                    "latitude"
-                ]
                 if key != "__class__":
                     if key == "created_at":
-                        self.created_at = datetime.fromisoformat(kwargs[key])
+                        self.created_at = datetime\
+                            .fromisoformat(kwargs[key])
                     elif key == "updated_at":
-                        self.updated_at = datetime.fromisoformat(kwargs[key])
+                        self.updated_at = datetime\
+                            .fromisoformat(kwargs[key])
                     elif key == "id":
                         self.id = kwargs[key]
                     elif key in int_attrs:
@@ -45,6 +52,8 @@ class BaseModel:
                         setattr(self, key, float(kwargs[key]))
                     else:
                         setattr(self, key, kwargs[key])
+            if obj_id is None:
+                models.storage.new(self)
         else:
             self.id = str(uuid4())
             self.created_at = datetime.now()
