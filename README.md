@@ -1,4 +1,4 @@
-# 0x00. AirBnB clone - The console
+# 0x02. AirBnB clone - MySQL
 ***
 
 This is the first step towards building your first full web application: the AirBnB clone. This first step is very important because you will use what you build during this project with all other following projects: HTML/CSS templating, database storage, API, front-end integration…
@@ -25,7 +25,7 @@ Destroy an object
 ## Installation
 ---
 
-1. Clone This Repo git clone [from](https://github.com/Tayebwa-ian/AirBnB_clone)
+1. Clone This Repo git clone [from](https://github.com/Tayebwa-ian/AirBnB_clone_v2)
 2. Access AirBnb directory: cd AirBnB_clone
 3. Install pycodestyle: `pip install pycodestyle`
 4. Run hbnb(interactively): ./console and enter command
