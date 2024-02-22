@@ -14,9 +14,11 @@ from os import getenv
 # between Place table and Amenity table
 place_amenity = Table("place_amenity", Base.metadata,
                       Column("place_id", String(60),
-                             ForeignKey("places.id"), nullable=False),
+                             ForeignKey("places.id"),
+                             nullable=False),
                       Column("amenity_id", String(60),
-                             ForeignKey("amenities.id"), nullable=False))
+                             ForeignKey("amenities.id"),
+                             nullable=False))
 
 
 class Place(BaseModel, Base):
@@ -45,8 +47,10 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     reviews = relationship("Review", backref="place", cascade="delete")
-    amenities = relationship("Amenity", secondary="place_amenity",
-                             viewonly=True)
+    amenity_places = relationship("Amenity", secondary=place_amenity,
+                                   primaryjoin="Place.id==place_amenity.place_id",
+                                   secondaryjoin="place_amenity.amenity_id==Amenity.id",
+                                   back_populates="place_amenities")
     amenity_ids = []
 
     def __init__(self, *args, **kwargs):
