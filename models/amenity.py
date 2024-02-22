@@ -1,14 +1,19 @@
 #!/usr/bin/python3
 """Amenity Model-Module(Inherits from the BaseModel)"""
-from .base_model import BaseModel
+from .base_model import BaseModel, Base
+from sqlalchemy import String, Column, ForeignKey
+from sqlalchemy.orm import relationship
 
 
-class Amenity(BaseModel):
+class Amenity(BaseModel, Base):
     """Holds amenity attributes and Functions
     Attrs:
         name: Amenity's name
     """
-    name = ""
+    __tablename__ = "anenities"
+    name = Column(String(128), nullable=False)
+    place_amenities = relationship("Place", secondary="place_amenity",
+                                   viewonly=False)
 
     def __init__(self, *args, **kwargs):
         """initializes Amenity"""
