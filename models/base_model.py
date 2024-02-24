@@ -109,5 +109,8 @@ class BaseModel:
 
     def __str__(self) -> str:
         """Return string representation of the object"""
-        rep = f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
+        self_dict = self.__dict__
+        if "_sa_instance_state" in self_dict:
+            del self_dict['_sa_instance_state']
+        rep = f"[{self.__class__.__name__}] ({self.id}) {self_dict}"
         return rep

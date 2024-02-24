@@ -1,8 +1,11 @@
 #!/usr/bin/python3
 """State Model-Module(Inherits from the BaseModel)"""
 from .base_model import BaseModel, Base
+from .city import City
 from sqlalchemy import String, Column
 from sqlalchemy.orm import relationship
+from os import getenv
+import models
 
 
 class State(BaseModel, Base):
@@ -13,8 +16,20 @@ class State(BaseModel, Base):
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
     cities = relationship("City", backref="state",
-                          cascade="delete")
+                          cascade="all, delete-orphan")
 
     def __init__(self, *args, **kwargs):
         """initializes state"""
         super().__init__(*args, **kwargs)
+
+    if getenv("HBNB_TYPE_STORAGE") != "db":
+        @property
+        def cities(self):
+            """Get a list of all cities
+            with state_id equals to the current State.id
+            """
+            result = []
+            for city in list(models.storage.all(City).values()):
+                if city.state_id == self.id:
+                    result.append(city)
+            return(result)

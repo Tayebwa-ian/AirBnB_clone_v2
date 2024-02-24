@@ -12,6 +12,7 @@ from models.user import User
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from os import getenv
+from datetime import datetime
 
 
 class DBStorage:
@@ -45,18 +46,17 @@ class DBStorage:
     def all(self, cls=None):
         """ query on the current database session (self.__session)
         all objects depending of the class name"""
-        d = {}
-        if cls is None:
+        result = {}
+        if cls:
+            q = self.__session.query(cls).all()
+            return(self.to_dict(q))
+        else:
             for c in self.all_classes:
                 c = eval(c)
-                for instance in self.__session.query(c).all():
-                    key = instance.__class__.__name__ + '.' + instance.id
-                    d[key] = instance
-        else:
-            for instance in self.__session.query(cls).all():
-                key = instance.__class__.__name__ + '.' + instance.id
-                d[key] = instance
-        return d
+                q = self.__session.query(c).all()
+                result.update(self.to_dict(q))
+            print(result)
+            return(result)
 
     def new(self, obj):
         """
@@ -86,9 +86,31 @@ class DBStorage:
         Session = scoped_session(session_db)
         self.__session = Session()
 
-    def close(self):
+    def close(self) -> None:
         """
             Closing the session
         """
         self.reload()
         self.__session.close()
+
+    @staticmethod
+    def to_dict(query) -> dict:
+        """method to turn a query object into a class
+        Arg:
+            query: The query object
+        Return: A dictionary of query contents
+        """
+        final = {}
+        for instance in query:
+            instance_key = instance.__class__.__name__ + '.' + instance.id
+            instance_dict = instance.__dict__
+            temp_dict = {}
+            for key in instance_dict.keys():
+                if key in ["created_at", "updated_at"]:
+                    temp_dict[key] = datetime.isoformat(instance_dict[key])
+                elif key == "_sa_instance_state":
+                    continue
+                else:
+                    temp_dict[key] = instance_dict[key]
+            final[instance_key] = temp_dict
+        return(final)

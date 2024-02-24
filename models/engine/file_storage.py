@@ -34,7 +34,7 @@ class FileStorage:
         if cls:
             # get objects related to a specific class
             new_objects = {}
-            for key in self.__objects:
+            for key in self.__objects.keys():
                 if key.split(".")[0] == cls.__name__:
                     new_objects[key] = self.__objects[key]
             return new_objects

@@ -149,11 +149,11 @@ class HBNBCommand(cmd.Cmd):
             value: the string containing the class and other needed value
         Return: None
         """
-        all_obj = storage.all()
         print_list = []
         if value:
             try:
-                classes[value]
+                cls = classes[value]
+                all_obj = storage.all(cls=cls)
                 for key in all_obj.keys():
                     cl = key.split(".")
                     if cl[0] == value:
@@ -163,6 +163,7 @@ class HBNBCommand(cmd.Cmd):
             except KeyError:
                 print("** class doesn't exist **")
         else:
+            all_obj = storage.all()
             for key in all_obj.keys():
                 cl = key.split(".")
                 # create object from all_obj dict and store in list
