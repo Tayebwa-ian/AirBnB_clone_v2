@@ -10,10 +10,10 @@ class Amenity(BaseModel, Base):
     Attrs:
         name: Amenity's name
     """
-    __tablename__ = "anenities"
+    __tablename__ = "amenities"
     name = Column(String(128), nullable=False)
     place_amenities = relationship("Place", secondary="place_amenity",
-                                   back_populates="amenity_places")
+                                   backref="amenity_places")
 
     def __init__(self, *args, **kwargs):
         """initializes Amenity"""

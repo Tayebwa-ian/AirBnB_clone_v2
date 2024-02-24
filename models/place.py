@@ -47,10 +47,7 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     reviews = relationship("Review", backref="place", cascade="delete")
-    amenity_places = relationship("Amenity", secondary=place_amenity,
-                                   primaryjoin="Place.id==place_amenity.place_id",
-                                   secondaryjoin="place_amenity.amenity_id==Amenity.id",
-                                   back_populates="place_amenities")
+
     amenity_ids = []
 
     def __init__(self, *args, **kwargs):
