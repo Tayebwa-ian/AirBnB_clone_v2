@@ -5,3 +5,6 @@ file.json
 test_params_create
 main_delete.py
 venv
+try.py
+*main.py
+my_ssh_private_key
