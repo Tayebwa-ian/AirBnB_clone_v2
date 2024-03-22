@@ -35,7 +35,7 @@ def python(text="is cool") -> str:
 
 
 @app.route("/number/<int:n>")
-def number(n) -> str:
+def number(n: int) -> str:
     """Take a number value and return string"""
     return(f"{n} is a number")
 
