@@ -5,8 +5,7 @@ of the web_static folder
 and deploy it to web servers
 """
 
-from datetime import datetime
-from fabric.api import local, put, run, env
+from fabric.api import put, run, env
 import os.path
 
 env.hosts = ['100.25.0.127', '107.23.161.15']
