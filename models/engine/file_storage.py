@@ -10,6 +10,7 @@ from ..place import Place
 from ..review import Review
 from ..state import State
 from ..user import User
+from os import getenv
 
 
 class FileStorage:
@@ -18,11 +19,11 @@ class FileStorage:
         serializes instances to a JSON file
         And deserializes JSON file to instances
     Attrs:
-        __file_path: string - path to the JSON file
+        __file_path: string - path to storage file (get from env)
         __objects: dictionary - empty but will store all objects
                     by <class name>.id
     """
-    __file_path = "file.json"
+    __file_path = getenv("HBNB_TYPE_STORAGE")
     __objects = {}
 
     def all(self, cls=None) -> dict:
