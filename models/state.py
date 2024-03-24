@@ -24,12 +24,12 @@ class State(BaseModel, Base):
 
     if getenv("HBNB_TYPE_STORAGE") != "db":
         @property
-        def cities(self):
+        def cities(self) -> list:
             """Get a list of all cities
             with state_id equals to the current State.id
             """
             result = []
             for city in list(models.storage.all(City).values()):
-                if city.state_id == self.id:
+                if city["state_id"] == self.id:
                     result.append(city)
             return(result)

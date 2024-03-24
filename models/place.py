@@ -62,7 +62,7 @@ class Place(BaseModel, Base):
             """
             reviewlist = []
             for review in list(models.storage.all(Review).values()):
-                if review.place_id == self.id:
+                if review["place_id"] == self.id:
                     reviewlist.append(review)
             return reviewlist
 
@@ -71,7 +71,7 @@ class Place(BaseModel, Base):
             """ Get Linked Amenities"""
             amenitylist = []
             for amenity in list(models.storage.all(Amenity).values()):
-                if amenity.id in self.amenity_ids:
+                if amenity["id"] in self.amenity_ids:
                     amenitylist.append(amenity)
             return amenitylist
 

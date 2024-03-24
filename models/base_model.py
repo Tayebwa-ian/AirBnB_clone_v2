@@ -22,8 +22,8 @@ class BaseModel:
         updated_at: When the row was last edited
     """
     id = Column(String(60), primary_key=True, nullable=False)
-    created_at = Column(DateTime(), default=datetime.utcnow(), nullable=False)
-    updated_at = Column(DateTime(), default=datetime.utcnow(), nullable=False)
+    created_at = Column(DateTime(), default=datetime.now(), nullable=False)
+    updated_at = Column(DateTime(), default=datetime.now(), nullable=False)
 
     def __init__(self, *args, **kwargs) -> None:
         """Intializes the class
@@ -76,7 +76,8 @@ class BaseModel:
             Update the updated_at field with current date
             and save to JSON file
         """
-        self.updated_at = datetime.now()
+        if "_sa_instance_state" in self.__dict__.keys():
+            self.updated_at = datetime.now()
         models.storage.new(self)
         models.storage.save()
 
