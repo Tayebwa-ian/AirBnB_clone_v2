@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 
 @app.teardown_appcontext
-def session_close(self) -> None:
+def teardown(self) -> None:
     """close the session"""
     storage.close()
 
@@ -26,4 +26,4 @@ def states_list():
 
 
 if __name__ == "__main__":
-    app.run("0.0.0.0", port=5000, debug=True)
+    app.run("0.0.0.0", port=5000)
