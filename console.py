@@ -91,13 +91,13 @@ class HBNBCommand(cmd.Cmd):
             # join the class name and id with a dot in middle
             key = ".".join(temp_obj)
             if key in all_obj.keys():
-                new_obj = classes[temp_obj[0]](**all_obj[key])
+                new_obj = all_obj[key].to_dict()
                 print(new_obj)
             else:
                 try:
-                    classes[temp_obj[0]]()
+                    classes[temp_obj[0]]
                     print("** no instance found **")
-                except NameError:
+                except KeyError:
                     print("** class doesn't exist **")
 
     def help_show(self) -> None:
@@ -124,14 +124,12 @@ class HBNBCommand(cmd.Cmd):
             # join the class name and id with a dot in middle
             key = ".".join(temp_obj)
             if key in all_obj.keys():
-                del all_obj[key]
-                for k in all_obj.keys():
-                    classes[temp_obj[0]](**all_obj[k]).save()
+                all_obj[key].delete()
             else:
                 try:
-                    classes[temp_obj[0]]()
+                    classes[temp_obj[0]]
                     print("** no instance found **")
-                except NameError:
+                except KeyError:
                     print("** class doesn't exist **")
 
     def help_destroy(self) -> None:
@@ -158,7 +156,7 @@ class HBNBCommand(cmd.Cmd):
                     cl = key.split(".")
                     if cl[0] == value:
                         # create object from all_obj dict and store in list
-                        li = classes[cl[0]](**all_obj[key])
+                        li = all_obj[key].to_dict()
                         print_list.append(str(li))
             except KeyError:
                 print("** class doesn't exist **")
@@ -167,7 +165,7 @@ class HBNBCommand(cmd.Cmd):
             for key in all_obj.keys():
                 cl = key.split(".")
                 # create object from all_obj dict and store in list
-                li = classes[cl[0]](**all_obj[key])
+                li = all_obj[key].to_dict()
                 print_list.append(str(li))
         if len(print_list) > 0:
             print(print_list)
@@ -208,9 +206,10 @@ class HBNBCommand(cmd.Cmd):
                     temp_new = new_value[2:]
                     for i in range(len(temp_new) - 1):
                         if i % 2 == 0:
-                            all_obj[key][temp_new[i]] = temp_new[i + 1]
+                            attr = temp_obj[2]
+                            all_obj[key].__dict__[attr] = temp_new[i + 1]
                     for k in all_obj.keys():
-                        classes[temp_obj[0]](**all_obj[k]).save()
+                        all_obj[k].save()
                 else:
                     try:
                         classes[temp_obj[0]]
@@ -219,9 +218,10 @@ class HBNBCommand(cmd.Cmd):
                         print("** class doesn't exist **")
             else:
                 if key in all_obj.keys():
-                    all_obj[key][temp_obj[2]] = temp_obj[3]
+                    attr = temp_obj[2]
+                    all_obj[key].__dict__[attr] = temp_obj[3]
                     for k in all_obj.keys():
-                        classes[temp_obj[0]](**all_obj[k]).save()
+                        all_obj[k].save()
                 else:
                     try:
                         classes[temp_obj[0]]
