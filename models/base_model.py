@@ -52,7 +52,7 @@ class BaseModel:
                 "longitude",
                 "latitude"
             ]
-            obj_id = getattr(self, "id", None)
+            obj_id = getattr(kwargs, "id", None)
             if obj_id is None:
                 self.id = str(uuid4())
                 self.created_at = datetime.now()
