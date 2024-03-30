@@ -9,9 +9,12 @@ from uuid import uuid4
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import String, Column, DateTime
+from os import getenv
 
-
-Base = declarative_base()
+if getenv("HBNB_TYPE_STORAGE") == "db":
+    Base = declarative_base()
+else:
+    Base = object
 
 
 class BaseModel:
@@ -21,9 +24,14 @@ class BaseModel:
         created_at: the time the row was created
         updated_at: When the row was last edited
     """
-    id = Column(String(60), primary_key=True, nullable=False)
-    created_at = Column(DateTime(), default=datetime.now(), nullable=False)
-    updated_at = Column(DateTime(), default=datetime.now(), nullable=False)
+    if getenv("HBNB_TYPE_STORAGE") == "db":
+        id = Column(String(60), primary_key=True, nullable=False)
+        created_at = Column(DateTime(), default=datetime.now(), nullable=False)
+        updated_at = Column(DateTime(), default=datetime.now(), nullable=False)
+    else:
+        id = ""
+        created_at = ""
+        updated_at = ""
 
     def __init__(self, *args, **kwargs) -> None:
         """Intializes the class
@@ -76,7 +84,10 @@ class BaseModel:
             Update the updated_at field with current date
             and save to JSON file
         """
-        if "_sa_instance_state" in self.__dict__.keys():
+        # If storage is database, Update the date if the object dict
+        # has _sa_instance_state attribute
+        if (getenv("HBNB_TYPE_STORAGE") != "db" or
+           "_sa_instance_state" in self.__dict__.keys()):
             self.updated_at = datetime.now()
         models.storage.new(self)
         models.storage.save()
@@ -102,7 +113,7 @@ class BaseModel:
                 dict_obj[key] = self_dict[key]
         # add key __class__ with the class name of the object
         dict_obj["__class__"] = self.__class__.__name__
-        return dict_obj
+        return(dict_obj)
 
     def delete(self) -> None:
         """delete the current instance from the storage"""
@@ -114,4 +125,4 @@ class BaseModel:
         if "_sa_instance_state" in self_dict:
             del self_dict['_sa_instance_state']
         rep = f"[{self.__class__.__name__}] ({self.id}) {self_dict}"
-        return rep
+        return(rep)

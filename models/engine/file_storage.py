@@ -13,6 +13,16 @@ from ..user import User
 from os import getenv
 
 
+classes = {
+    "User": User,
+    "State": State,
+    "Review": Review,
+    "Place": Place,
+    "City": City,
+    "Amenity": Amenity
+    }
+
+
 class FileStorage:
     """
     Description:
@@ -32,14 +42,18 @@ class FileStorage:
             cls: specific class, which objects should be returned
         Return: Dict of objects
         """
+        objects = {}
         if cls:
             # get objects related to a specific class
-            new_objects = {}
             for key in self.__objects.keys():
                 if key.split(".")[0] == cls.__name__:
-                    new_objects[key] = self.__objects[key]
-            return new_objects
-        return self.__objects
+                    objects[key] = cls(**self.__objects[key])
+            return objects
+        for key in self.__objects.keys():
+            c = key.split(".")[0]
+            if c in classes.keys():
+                objects[key] = classes[c](**self.__objects[key])
+        return objects
 
     def new(self, obj) -> None:
         """sets in __objects the obj with key <obj class name>.id

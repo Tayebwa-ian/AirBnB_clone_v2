@@ -5,7 +5,7 @@ model to mange DB storage using sqlAlchemy
 from models.amenity import Amenity
 from models.base_model import BaseModel, Base
 from models.city import City
-from models.place import Place, place_amenity
+from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
@@ -13,6 +13,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from os import getenv
 from datetime import datetime
+
+
+if getenv("HBNB_TYPE_STORAGE") == "db":
+    from models.place import place_amenity
 
 
 class DBStorage:
@@ -55,7 +59,6 @@ class DBStorage:
                 c = eval(c)
                 q = self.__session.query(c).all()
                 result.update(self.to_dict(q))
-            print(result)
             return(result)
 
     def new(self, obj):
@@ -103,14 +106,5 @@ class DBStorage:
         final = {}
         for instance in query:
             instance_key = instance.__class__.__name__ + '.' + instance.id
-            instance_dict = instance.__dict__
-            temp_dict = {}
-            for key in instance_dict.keys():
-                if key in ["created_at", "updated_at"]:
-                    temp_dict[key] = datetime.isoformat(instance_dict[key])
-                elif key == "_sa_instance_state":
-                    continue
-                else:
-                    temp_dict[key] = instance_dict[key]
-            final[instance_key] = temp_dict
+            final[instance_key] = instance
         return(final)
