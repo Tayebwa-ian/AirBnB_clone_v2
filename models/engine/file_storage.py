@@ -92,6 +92,7 @@ class FileStorage:
             key = type(obj).__name__ + "." + obj.id
             if self.__objects.get(key):
                 self.__objects.pop(key)
+            self.save()
 
     def close(self) -> None:
         """
